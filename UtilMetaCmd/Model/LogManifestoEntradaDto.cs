@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace UtilMetaCmd.Model
 {
-    public class LogManifestoEntradaDto
+    public class LinhaDocumento
     {
+        public int NumeroLinha { get; set; }
+        public string Conteudo { get; set; }
     }
 
     public class LogManifestoEntradaItemDto

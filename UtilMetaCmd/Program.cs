@@ -22,45 +22,50 @@ namespace UtilMetaCmd
 
         static void Main(string[] args)
         {
-            //var txtFileLogManifesto = @"C:\Program Files (x86)\Meta.Net\TK335505\AbelGalinha-LogMetaServerGlobal_GerenciadorNotaFiscalManifestacao25072022.log";
-            var txtFileLogManifesto = args[0];
+            var txtFileLogManifesto = @"C:\Program Files (x86)\Meta.Net\TK335505\AbelGalinha-LogMetaServerGlobal_GerenciadorNotaFiscalManifestacao25072022.log";
+            //var txtFileLogManifesto = args[0];
 
-            var linhasArquivo = new List<String>();
+            var linhasArquivo = new List<LinhaDocumento>();
             var linhasConvertidas = new List<LogManifestoEntradaItemDto>();
 
             using(StreamReader sr = new StreamReader(txtFileLogManifesto))
             {
+                int counter = 0;
                 while (!sr.EndOfStream)
                 {
-                    linhasArquivo.Add(sr.ReadLine());
+                    counter++;
+                    linhasArquivo.Add(new LinhaDocumento(){
+                        NumeroLinha=counter,
+                        Conteudo=sr.ReadLine()
+                    });
                 }
             }
 
-            LogManifestoEntradaItemDto registroReferencia = new LogManifestoEntradaItemDto();
 
-            foreach(var linha in linhasArquivo)
+            LogManifestoEntradaItemDto registroReferencia = null;
+            foreach (var linha in linhasArquivo)
             {
                 var indexLinha = linhasArquivo.IndexOf(linha);
                 RegistrarLog("Inicializando parse da linha " + indexLinha);
-
-                if (linha.Contains("ConsumirServicoEspecifico") && linha.Contains(" - Início"))
+                
+                if (linha.Conteudo.Contains("ConsumirServicoEspecifico") && linha.Conteudo.Contains(" - Início"))
                 {
                     registroReferencia = new LogManifestoEntradaItemDto();
-                    var dataString = linhasArquivo[indexLinha - 1].Substring(11, 19);
+                    var dataString = linhasArquivo[indexLinha - 1].Conteudo.Substring(11, 19);
                     DateTime parsedDate = DateTime.ParseExact(dataString, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                     registroReferencia.Horario = parsedDate;
                     registroReferencia = new LogManifestoEntradaItemDto();
                     RegistrarLog("Inicializando registro linha " + indexLinha);
                 }
 
-                if (linha.Contains("Data/Hora"))
+                if (linha.Conteudo.Contains("Data/Hora"))
                 {
                     if(registroReferencia == null)
                     {
                         RegistrarLog("Não inicializado registro para a linha  " + indexLinha);
                         continue;
                     }
-                    var dataString = linha.Substring(11, 19);
+                    var dataString = linha.Conteudo.Substring(11, 19);
                     DateTime parsedDate = DateTime.ParseExact(dataString, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
                     if(registroReferencia.Horario == null)
@@ -87,7 +92,7 @@ namespace UtilMetaCmd
                     continue;
                 }
 
-                if (linha.Contains("ConsumirServicoEspecifico") && linha.Contains(" - Fim"))
+                if (linha.Conteudo.Contains("ConsumirServicoEspecifico") && linha.Conteudo.Contains(" - Fim"))
                 {
                     linhasConvertidas.Add(registroReferencia);
                     registroReferencia = null;
@@ -95,35 +100,35 @@ namespace UtilMetaCmd
                     //add o registro na lista de registros e zera o registro
                 }
 
-                if (linha.Contains("ConsumirServicoEspecifico") && linha.Contains(" - Url web service"))
+                if (linha.Conteudo.Contains("ConsumirServicoEspecifico") && linha.Conteudo.Contains(" - Url web service"))
                 {
-                    var lastHttps = linha.LastIndexOf("https");
-                    registroReferencia.UrlWebService = linha.Substring(111,74);
+                    var lastHttps = linha.Conteudo.LastIndexOf("https");
+                    registroReferencia.UrlWebService = linha.Conteudo.Substring(111,74);
                     //add o registro na lista de registros e zera o registro
                     
                 }
 
-                if (linha.Contains("<distDFeInt"))
+                if (linha.Conteudo.Contains("<distDFeInt"))
                 {
-                    registroReferencia.UltNSUEnvio = GetXmlTagValue(linha, "ultNSU");
+                    registroReferencia.UltNSUEnvio = GetXmlTagValue(linha.Conteudo, "ultNSU");
                     if(registroReferencia.UltNSUEnvio == null)
                     {
-                        registroReferencia.UltNSUEnvio = "Registro por chave " + GetXmlTagValue(linha, "chNFe");
+                        registroReferencia.UltNSUEnvio = "Registro por chave " + GetXmlTagValue(linha.Conteudo, "chNFe");
                     }
-                    registroReferencia.CNPJ = GetXmlTagValue(linha, "CNPJ");
+                    registroReferencia.CNPJ = GetXmlTagValue(linha.Conteudo, "CNPJ");
 
-                    registroReferencia.XmlEnvio = linha;
+                    registroReferencia.XmlEnvio = linha.Conteudo;
                     registroReferencia.NumeroLinhaEnvio = indexLinha;
                 }
 
-                if (linha.Contains("<retDistDFeInt"))
+                if (linha.Conteudo.Contains("<retDistDFeInt"))
                 {
                     
-                    registroReferencia.XmlEnvio = linha;
-                    registroReferencia.CStatRetorno = GetXmlTagValue(linha,"cStat");
-                    registroReferencia.XMotivoRetorno = GetXmlTagValue(linha, "xMotivo");
-                    registroReferencia.MaxNSURetorno = GetXmlTagValue(linha, "maxNSU");
-                    registroReferencia.UltNSURetorno = GetXmlTagValue(linha, "ultNSU");
+                    registroReferencia.XmlEnvio = linha.Conteudo;
+                    registroReferencia.CStatRetorno = GetXmlTagValue(linha.Conteudo, "cStat");
+                    registroReferencia.XMotivoRetorno = GetXmlTagValue(linha.Conteudo, "xMotivo");
+                    registroReferencia.MaxNSURetorno = GetXmlTagValue(linha.Conteudo, "maxNSU");
+                    registroReferencia.UltNSURetorno = GetXmlTagValue(linha.Conteudo, "ultNSU");
                     registroReferencia.NumeroLinhaRetorno = indexLinha;
                 }
             }
@@ -131,21 +136,21 @@ namespace UtilMetaCmd
             using(StreamWriter swConvertedFile = new StreamWriter(Path.Combine(Environment.CurrentDirectory,"ConvertedFile.csv")))
             {
                 swConvertedFile.WriteLine("NumeroLinhaEnvio;NumeroLinhaRetorno;CNPJ;Horario;CStatRetorno;XMotivoRetorno;UltNSUEnvio;UltNSURetorno;MaxNSURetorno");
-                var objetosConvertidosAgrupadosPorCnpj = linhasConvertidas.GroupBy(x => x.CNPJ);
-                foreach (var itemEmpresa in objetosConvertidosAgrupadosPorCnpj)
-                {
-                    swConvertedFile.WriteLine("CNPJ: " + itemEmpresa.Key);
+                var objetosConvertidosAgrupadosPorCnpj = linhasConvertidas.OrderBy(x => x.CNPJ);
+                //foreach (var itemEmpresa in objetosConvertidosAgrupadosPorCnpj)
+                //{
+                    //swConvertedFile.WriteLine("CNPJ: " + itemEmpresa.Key);
                     //swConvertedFile.WriteLine(item.NumeroLinhaEnvio + ";" + item.NumeroLinhaRetorno +
                     //    ";" + item.CNPJ + ";" + item.Horario.Value.ToShortDateString() + " - " + item.Horario.Value.ToShortTimeString()
                     //    + ";" + item.CStatRetorno + ";" + item.XMotivoRetorno + ";" + item.UltNSUEnvio + ";" + item.UltNSURetorno + ";" + item.MaxNSURetorno);
-                    foreach (var item in itemEmpresa)
+                    foreach (var item in objetosConvertidosAgrupadosPorCnpj)
                     {
                         swConvertedFile.WriteLine(item.NumeroLinhaEnvio + ";" + item.NumeroLinhaRetorno +
-                        ";" + item.CNPJ + ";" + item.Horario.Value.ToShortDateString() + " - " + item.Horario.Value.ToShortTimeString()
+                        ";" + item.CNPJ + ";" + item.Horario.Value.ToString("dd/MM/yyyy") + " - " + item.Horario.Value.ToString("HH:mm:ss")
                         + ";" + item.CStatRetorno + ";" + item.XMotivoRetorno + ";" + item.UltNSUEnvio + ";" + item.UltNSURetorno + ";" + item.MaxNSURetorno);
                     }
                     
-                }
+                //}
             }
             
          
@@ -173,7 +178,7 @@ namespace UtilMetaCmd
         }
         public static void RegistrarLog(string info)
         {
-            var lineInfo = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + " - " + info;
+            var lineInfo = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + " - " + info;
             Console.WriteLine(lineInfo);
             logWriter.WriteLine(lineInfo);
             
