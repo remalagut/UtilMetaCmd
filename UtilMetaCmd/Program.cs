@@ -136,24 +136,21 @@ namespace UtilMetaCmd
             using(StreamWriter swConvertedFile = new StreamWriter(Path.Combine(Environment.CurrentDirectory,"ConvertedFile.csv")))
             {
                 swConvertedFile.WriteLine("NumeroLinhaEnvio;NumeroLinhaRetorno;CNPJ;Horario;CStatRetorno;XMotivoRetorno;UltNSUEnvio;UltNSURetorno;MaxNSURetorno");
-                var objetosConvertidosAgrupadosPorCnpj = linhasConvertidas.OrderBy(x => x.CNPJ);
-                //foreach (var itemEmpresa in objetosConvertidosAgrupadosPorCnpj)
-                //{
-                    //swConvertedFile.WriteLine("CNPJ: " + itemEmpresa.Key);
-                    //swConvertedFile.WriteLine(item.NumeroLinhaEnvio + ";" + item.NumeroLinhaRetorno +
+                var objetosConvertidosAgrupadosPorCnpj = linhasConvertidas.OrderBy(x => x.CNPJ).GroupBy(x => x.CNPJ);
+                foreach (var itemEmpresa in objetosConvertidosAgrupadosPorCnpj)
+                {
+                    swConvertedFile.WriteLine("CNPJ: " + itemEmpresa.Key);
+                    //swConvertedFile.WriteLine(itemEmpresa.NumeroLinhaEnvio + ";" + item.NumeroLinhaRetorno +
                     //    ";" + item.CNPJ + ";" + item.Horario.Value.ToShortDateString() + " - " + item.Horario.Value.ToShortTimeString()
                     //    + ";" + item.CStatRetorno + ";" + item.XMotivoRetorno + ";" + item.UltNSUEnvio + ";" + item.UltNSURetorno + ";" + item.MaxNSURetorno);
-                    foreach (var item in objetosConvertidosAgrupadosPorCnpj)
+                    foreach (var item in itemEmpresa)
                     {
                         swConvertedFile.WriteLine(item.NumeroLinhaEnvio + ";" + item.NumeroLinhaRetorno +
-                        ";" + item.CNPJ + ";" + item.Horario.Value.ToString("dd/MM/yyyy") + " - " + item.Horario.Value.ToString("HH:mm:ss")
-                        + ";" + item.CStatRetorno + ";" + item.XMotivoRetorno + ";" + item.UltNSUEnvio + ";" + item.UltNSURetorno + ";" + item.MaxNSURetorno);
+                       ";" + item.CNPJ + ";" + item.Horario.Value.ToString("dd/MM/yyyy") + " - " + item.Horario.Value.ToString("HH:mm:ss")
+                       + ";" + item.CStatRetorno + ";" + item.XMotivoRetorno + ";" + item.UltNSUEnvio + ";" + item.UltNSURetorno + ";" + item.MaxNSURetorno);
                     }
-                    
-                //}
+                }
             }
-            
-         
         }
 
         public static string RemoveInvalidChars(string strSource)
