@@ -68,10 +68,17 @@ namespace UtilMetaCmd
             foreach (var xml in filesXml)
             {
                 var xmlContent = new StreamReader(xml).ReadToEnd();
+
                 var chave = GetXmlTagValue(xmlContent, "chNFe");
+                var chaveMDFe = GetXmlTagValue(xmlContent, "chMDFe");
+                var isMDFe = xmlContent.Contains("<mdfeProc");
+
+                if (isMDFe) chave = chaveMDFe;
+
+                var nomeTabelaChave = !isMDFe ? "FAT_NotaFiscal" : "FAT_ManifestoEletronicoDocumentoFiscal";
 
                 var documentScript = @"SET @chaveDocumento='"+chave+@"'
-set @idDocumento = (SELECT top 1 Id FROM FAT_NotaFiscal where ChaveAcesso=@chaveDocumento);
+set @idDocumento = (SELECT top 1 Id FROM " + nomeTabelaChave + @" where ChaveAcesso=@chaveDocumento);
 SELECT @idDocumento
 INSERT INTO [Fiscal.DFe].[ArmazenamentoDFe]
            ([IdEmpresa],[IdUltimoUsuario],[IdDocumentoFiscal],[IdDestinatario],[TipoDocumento],[ModeloDocumento],[StatusDocumento],[ChaveAcesso],[Serie],[Numero],[DataMovimentacao]
