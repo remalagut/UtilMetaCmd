@@ -37,7 +37,7 @@ namespace UtilMetaCmd
 
 
             //var txtFileLogManifesto = @"C:\Program Files (x86)\Meta.Net\TK335505\AbelGalinha-LogMetaServerGlobal_GerenciadorNotaFiscalManifestacao25072022.log";
-            if (args.Length == 0)
+            if (args.Length < 2)
                 Console.ReadLine();
 
             var action = args[0];

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Changelog.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="XmlsExemplo\" />
