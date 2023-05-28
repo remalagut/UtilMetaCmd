@@ -43,12 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArmazenamentoDfeFromFolder\ArmazenamentoDFeFromFolder.cs" />
+    <Compile Include="ArmazenamentoDfeFromFolder\XmlArmazenamentoDfeDoc\DfeScriptCreator.cs" />
+    <Compile Include="ArmazenamentoDfeFromFolder\XmlArmazenamentoDfeDoc\DFeScriptCreatorSATCFe.cs" />
+    <Compile Include="ArmazenamentoDfeFromFolder\XmlArmazenamentoDfeDoc\DFeScriptCreatorMDFe.cs" />
+    <Compile Include="ArmazenamentoDfeFromFolder\XmlArmazenamentoDfeDoc\DFeScriptCreatorNFe.cs" />
+    <Compile Include="ArmazenamentoDfeFromFolder\XmlArmazenamentoDfeDoc\DFeScriptCreatorCTe.cs" />
+    <Compile Include="ChaveNfeSplitter\ChaveNfeSplitter.cs" />
+    <Compile Include="Extensions\AppXmlExtensions.cs" />
+    <Compile Include="Log\AppLog.cs" />
+    <Compile Include="ManifestoToCsv\ManifestoToCsv.cs" />
     <Compile Include="Model\LogManifestoEntradaDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="XmlsExemplo\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
