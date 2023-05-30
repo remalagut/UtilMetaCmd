@@ -12,10 +12,7 @@ namespace UtilMetaCmd.ArmazenamentoDfeFromFolder.XmlArmazenamentoDfeDoc
         
         override public string GetDFeInsert(string xml)
         {
-            var indexChave = xml.IndexOf("Id=\"CFe");
-            indexChave += 4;
-            var chave = xml.Substring(indexChave, 47);
-
+            var chave = GetChaveDFe(xml);
             var documentScript = @"SET @chaveDocumento='" + chave + @"'
 set @idDocumento = (SELECT top 1 Id FROM PDV_SATFiscal where ChaveAcesso=@chaveDocumento);
 SELECT @idDocumento
@@ -32,6 +29,15 @@ INSERT INTO [Fiscal.DFe].[ArmazenamentoDFe]
 		   WHERE DOC.Id = @idDocumento;";
             Log.AppLog.RegistrarLog("Gerado comando para o documento SAT chave " + chave);
             return documentScript;
+        }
+
+        public override string GetChaveDFe(string xml)
+        {
+            //var chave = xml.GetXmlTagValue("chCTe");
+            var indexChave = xml.IndexOf("Id=\"CFe");
+            indexChave += 4;
+            var chave = xml.Substring(indexChave, 47);
+            return chave;
         }
     }
 }

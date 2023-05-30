@@ -9,10 +9,9 @@ namespace UtilMetaCmd.ArmazenamentoDfeFromFolder.XmlArmazenamentoDfeDoc
 {
     public class DFeScriptCreatorCTe : DfeScriptCreator
     {
-        
         override public string GetDFeInsert(string xml)
         {
-            var chave = xml.GetXmlTagValue("chCTe");
+            var chave = GetChaveDFe(xml);
             var documentScript = @"SET @chaveDocumento='" + chave + @"'
 set @idDocumento = (SELECT top 1 Id FROM FAT_ConhecimentoTransporteEletronico where ChaveAcesso=@chaveDocumento);
 SELECT @idDocumento
@@ -31,6 +30,12 @@ INSERT INTO [Fiscal.DFe].[ArmazenamentoDFe]
             Log.AppLog.RegistrarLog("Gerado comando para o documento CTe chave " + chave);
             //PRINT 'Inserido documento na fila armazenamentodfe para chave ' + @chaveDocumento
             return documentScript;
+        }
+
+        public override string GetChaveDFe(string xml)
+        {
+            var chave = xml.GetXmlTagValue("chCTe");
+            return chave;
         }
     }
 }

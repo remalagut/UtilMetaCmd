@@ -12,7 +12,7 @@ namespace UtilMetaCmd.ArmazenamentoDfeFromFolder.XmlArmazenamentoDfeDoc
         
         override public string GetDFeInsert(string xml)
         {
-            var chave = xml.GetXmlTagValue("chNFe");
+            var chave = GetChaveDFe(xml);
             var documentScript = @"SET @chaveDocumento='" + chave + @"'
 set @idDocumento = (SELECT top 1 Id FROM FAT_NotaFiscal where ChaveAcesso=@chaveDocumento);
 SELECT @idDocumento
@@ -30,6 +30,12 @@ INSERT INTO [Fiscal.DFe].[ArmazenamentoDFe]
            		   WHERE DOC.Id = @idDocumento;";
             Log.AppLog.RegistrarLog("Gerado comando para o documento MDFe chave " + chave);
             return documentScript;
+        }
+
+        public override string GetChaveDFe(string xml)
+        {
+            var chave = xml.GetXmlTagValue("chMDFe");
+            return chave;
         }
     }
 }

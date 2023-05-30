@@ -33,8 +33,7 @@ namespace UtilMetaCmd
             Console.WriteLine("1 - Formato de Entrada: > UtilMetaCmd manifesto-to-csv c:\\logmanifesto.txt - converte o log do manifesto na planilha formato csv estruturado (saída ConvertedFile.csv na pasta dos xmls)");
             Console.WriteLine("2 - Formato de Entrada: > UtilMetaCmd armazenamentodfe-from-folder c:\\pastaxmls\\ - gera comando de inserção de xmls na armazenamentodfe a partir da pasta com os xmls das notas. (saída arquivo scriptArmazenamentoDfe-GUID.sql na pasta dos xmls)");
             Console.WriteLine("3 - Formato de entrada: > UtilMetaCmd chave 35210578901234567890123456789012345678901234 - decompoe a chave da nfe e printa cada componente da chave separadamente em tela");
-
-
+            Console.WriteLine("4 - Formato de Entrada: > UtilMetaCmd xml-split c:\\arquivo_xml_contendo_1xml_por_linha.txt - separa um arquivo de texto que tem um xml por linha descarregando um arquivo por documento nomeado pela chave (forma facil de pegar os xmls é dando select no SSMS, selecionando a coluna de xml e copiando, ou exportando do mongodb pelo export data)");
 
             //var txtFileLogManifesto = @"C:\Program Files (x86)\Meta.Net\TK335505\AbelGalinha-LogMetaServerGlobal_GerenciadorNotaFiscalManifestacao25072022.log";
             if (args.Length < 2)
@@ -58,14 +57,12 @@ namespace UtilMetaCmd
                 case "chave":
                     UtilMetaCmd.ChaveNfeSplitter.ChaveNfeSplitter.SplitChaveNfe(parametro);
                     break;
+                case "xml-split":
+                    UtilMetaCmd.XmlTextSplitter.XmlTextSplitter.Split(parametro);
+                    break;
                 default:
                     break;
             }
-            
         }
-
-
-     
-     
     }
 }

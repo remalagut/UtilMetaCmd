@@ -25,33 +25,16 @@ namespace UtilMetaCmd.ArmazenamentoDfeFromFolder
                 var xmlContent = new StreamReader(xml).ReadToEnd();
                 var modelo = xmlContent.GetXmlTagValue("mod");
 
-                DfeScriptCreator dfeScriptCreator = null;
+                DfeScriptCreator dfeScriptCreator = DfeScriptCreator.GetInstance(xmlContent);
 
-                switch (modelo)
+                if(dfeScriptCreator == null)
                 {
-                    case "57":
-                        dfeScriptCreator = new DFeScriptCreatorCTe();
-                        break;
-                    case "55":
-                    case "65":
-                        dfeScriptCreator = new DFeScriptCreatorNFe();
-                        break;
-                    case "58":
-                        dfeScriptCreator = new DFeScriptCreatorMDFe();
-                        break;
-                    case "59":
-                        dfeScriptCreator = new DFeScriptCreatorSATCFe();
-                        break;
-                    default:
-                        Console.WriteLine("Documento de modelo não implementado será ignorado: " + xml);
-                        break;
+                    Console.WriteLine("dfeScriptCreator não inicializado (modelo não encontrado), seguindo para próximo documento");
+                    continue;
                 }
 
                 string documentoScript = dfeScriptCreator.GetDFeInsert(xmlContent);
                 script += documentoScript;
-
-    
-
             }
             var dateNow = DateTime.Now.ToString("yyyyMMddHHmmss");
             var pathArquivoInsert = Path.Combine(urlPastaContendoXmls, "scriptArmazenamentoDfe-" + dateNow + ".sql");
