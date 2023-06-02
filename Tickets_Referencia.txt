@@ -5,3 +5,5 @@ Comparação entre relatório de contabilidade e dados no sistema 375274
 Comparação entre relatório 112 e tela Gerenciamento DFe 403576
 
 Restauração de impostos pis/cofins vinculados à entrada de mercadoria a partir de backup mais antigo 415243
+
+Analise de processamento fila de custo 412764
