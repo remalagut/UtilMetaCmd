@@ -9,3 +9,5 @@ Restauração de impostos pis/cofins vinculados à entrada de mercadoria a parti
 Analise de processamento fila de custo 412764
 
 Analise de custo CTe vinculado à entrada 419920
+
+Documentação técnica compliance fiscal https://docs.google.com/document/d/1KF7aR2vSosu9crroTrAyKmxOQeYKAHkNf4h3e8f2zyU/edit?usp=sharing
