@@ -34,13 +34,14 @@ namespace UtilMetaCmd
             Console.WriteLine("2 - Formato de Entrada: > UtilMetaCmd armazenamentodfe-from-folder c:\\pastaxmls\\ - gera comando de inserção de xmls na armazenamentodfe a partir da pasta com os xmls das notas. (saída arquivo scriptArmazenamentoDfe-GUID.sql na pasta dos xmls)");
             Console.WriteLine("3 - Formato de entrada: > UtilMetaCmd chave 35210578901234567890123456789012345678901234 - decompoe a chave da nfe e printa cada componente da chave separadamente em tela");
             Console.WriteLine("4 - Formato de Entrada: > UtilMetaCmd xml-split c:\\arquivo_xml_contendo_1xml_por_linha.txt - separa um arquivo de texto que tem um xml por linha descarregando um arquivo por documento nomeado pela chave (forma facil de pegar os xmls é dando select no SSMS, selecionando a coluna de xml e copiando, ou exportando do mongodb pelo export data)");
+            Console.WriteLine("4 - Formato de Entrada: > UtilMetaCmd.exe sped-to-sql \".\\spedtest\\AUTO POSTO IRMAOS ROTTAVA LTDA-1-SPED-FISCAL202308.TXT\" - gera os scripts create table e insert a partir de uma EFD");
 
             //var txtFileLogManifesto = @"C:\Program Files (x86)\Meta.Net\TK335505\AbelGalinha-LogMetaServerGlobal_GerenciadorNotaFiscalManifestacao25072022.log";
             if (args.Length < 2)
                 Console.ReadLine();
 
             var action = args[0];
-            var parametro = args[1];
+            var parametro = args.Length > 1 ? args[1] : null;
             //https://i.imgur.com/MELu7LL.png
 
             //var action = "armazenamentodfe-from-folder";
@@ -59,6 +60,9 @@ namespace UtilMetaCmd
                     break;
                 case "xml-split":
                     UtilMetaCmd.XmlTextSplitter.XmlTextSplitter.Split(parametro);
+                    break;
+                case "sped-to-sql":
+                    UtilMetaCmd.SPEDToSql.SpedToSql.ConverterSpedParaSql(parametro);
                     break;
                 default:
                     break;
