@@ -2,4 +2,16 @@ Tickets referencia em análise.
 
 Comparação REL 0052 X Tela de gerenciamento de documentos fiscais 371348
 Comparação entre relatório de contabilidade e dados no sistema 375274
+Comparação entre relatório 112 e tela Gerenciamento DFe 403576
 
+Restauração de impostos pis/cofins vinculados à entrada de mercadoria a partir de backup mais antigo 415243
+
+Analise de processamento fila de custo 412764
+
+Analise de custo CTe vinculado à entrada 419920
+
+Analise Never Stop 407872
+
+Documentação técnica compliance fiscal https://docs.google.com/document/d/1KF7aR2vSosu9crroTrAyKmxOQeYKAHkNf4h3e8f2zyU/edit?usp=sharing
+
+Metanet Integração Ticket Log https://docs.google.com/document/d/1R1Y_WRFbB6LK1n9KNcSSFUy9TPMpP5jbn85LBCqHBjA/edit
