@@ -42,7 +42,7 @@ namespace UtilMetaCmd.SPEDToSql
                     if(!createTableCommands.Any(x => x.Key==tipoRegistro))
                         createTableCommands.Add(tipoRegistro, comandoCreateTable);
 
-                    var comandoInsercao = GerarComandoInsercao(tipoRegistro,listaCamposParaInsercao);
+                    var comandoInsercao = GerarComandoInsercao(tipoRegistro, linha,listaCamposParaInsercao);
                     insertCommands.Add(linha,comandoInsercao);
                 }
             }
@@ -62,14 +62,21 @@ namespace UtilMetaCmd.SPEDToSql
             {
                 foreach (var itemLinhaCreate in insertCommands)
                     sw.WriteLine(itemLinhaCreate.Value);
+
+                sw.WriteLine(@"
+                --Comando exemplo de JOIN
+                --SELECT C100.Linha AS LinhaC100,C170.Linha as LinhaC170,C170.* FROM RegistroC170 C170
+                --INNER JOIN RegistroC100 C100 ON C100.Linha = (
+                --	SELECT top 1 c100.Linha from RegistroC100 C100Interno inner join RegistroC170 C170Interno on C170Interno.Linha>=C100.Linha 	where C170Interno.Linha=C170.Linha ORDER BY C170Interno.Linha DESC)
+               ");
             }
 
         }
 
-        private static string GerarComandoInsercao(string tipoRegistro,Dictionary<string, string> listaCamposParaInsercao)
+        private static string GerarComandoInsercao(string tipoRegistro, int linha, Dictionary<string, string> listaCamposParaInsercao)
         {
             var sb = new StringBuilder();
-            sb.Append("INSERT INTO Registro" + tipoRegistro + " (");
+            sb.Append("INSERT INTO Registro" + tipoRegistro + " (Linha, ");
             //string comandoInsercao = $"INSERT INTO {tipoRegistro} ";
 
             foreach (var itemCampoValor in listaCamposParaInsercao)
@@ -79,7 +86,7 @@ namespace UtilMetaCmd.SPEDToSql
             //remove a virgula do ultimo campo
             sb.Remove(sb.Length - 1, 1);
 
-            sb.Append(") VALUES (");
+            sb.Append(") VALUES (" + linha + ", ");
 
             foreach(var itemCampoValor in listaCamposParaInsercao)
             {
@@ -98,7 +105,8 @@ namespace UtilMetaCmd.SPEDToSql
         private static string GerarComandoCreate(string registro, Dictionary<string, string> listaCamposParaInsercao)
         {
             var sb = new StringBuilder();
-            sb.Append("CREATE TABLE Registro" + registro + "(");
+            sb.AppendLine("IF Exists(SELECT top 1 * FROM sys.tables where name = 'Registro"+registro+"') BEGIN DROP TABLE Registro" + registro + "; END");
+            sb.Append("CREATE TABLE Registro" + registro + "(Linha INT NULL, ");
 
             foreach(var itemCampoValor in listaCamposParaInsercao)
             {

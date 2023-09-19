@@ -47,6 +47,7 @@ namespace UtilMetaCmd
             //var action = "armazenamentodfe-from-folder";
             //var parametro = @"E:\transient\TK363002\OUTUBRO 2022\";
 
+            parametro = @"D:\transient\11092023\AUTO POSTO IRMAOS ROTTAVA LTDA-1-SPED-FISCAL202308.TXT";
             switch (action)
             {
                 case "manifesto-to-csv":
