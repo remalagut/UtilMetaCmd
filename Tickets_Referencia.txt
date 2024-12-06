@@ -6,7 +6,7 @@ Comparação entre relatório 112 e tela Gerenciamento DFe 403576
 Comparação rel 139 e 112 465456
 Comparação rel 008 e 474 496226
 Comparação rel 137 VS 1601 SPED Fiscal 510663
-Comparação rel 096 VS 335 SPED Fiscal 543067
+Comparação rel 096 VS 335 543067
 
 Restauração de impostos pis/cofins vinculados à entrada de mercadoria a partir de backup mais antigo 415243
 
