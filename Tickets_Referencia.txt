@@ -8,6 +8,7 @@ Comparação rel 008 e 474 496226
 Comparação rel 137 VS 1601 SPED Fiscal 510663
 Comparação rel 096 VS 335 543067
 Comparação rel 115 VS 503 537447
+Comparação rel 456 VS Sped Fiscal > Registro 1601 573750 - interação n°2.
 
 Restauração de impostos pis/cofins vinculados à entrada de mercadoria a partir de backup mais antigo 415243
 
