@@ -12,6 +12,7 @@ Comparação rel 456 VS Sped Fiscal > Registro 1601 573750 - interação n°2.
 Comparação rel 542 VS LMC 599393 - interação n°9.
 Comparação Preço Custo entre Relatório 263 & Cadastro Mercadoria - 615142 - interação n°6.
 Comparação rel 031 VS 052 rel  - interação n°4.
+Compração Relatório 079 e Conferência de Turno > Vendas de Combustível: 656683 - interação n°6.
 
 Restauração de impostos pis/cofins vinculados à entrada de mercadoria a partir de backup mais antigo 415243
 
